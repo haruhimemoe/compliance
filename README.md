@@ -1,4 +1,4 @@
-# @haruhime/compliance
+# @haruhimemoe/compliance
 
 Checks osu! beatmapsets against the content rules for [officially supported osu! tournaments](https://osu.ppy.sh/wiki/en/Tournaments/Official_support). You pass in a beatmapset's osu! fields and get back **ok**, **potential** (needs a closer look) or **disallowed**, with a reason.
 
@@ -13,14 +13,14 @@ This package gives a guide, not a ruling. The Tournament Committee decides. See 
 ESM only (Node 22.12+ can also `require()` it).
 
 ```sh
-bun add @haruhime/compliance
-# or: npm install @haruhime/compliance
+bun add @haruhimemoe/compliance
+# or: npm install @haruhimemoe/compliance
 ```
 
 ## Use
 
 ```ts
-import { evaluateBeatmapset, factsFromOsuBeatmapset, verdictText } from "@haruhime/compliance";
+import { evaluateBeatmapset, factsFromOsuBeatmapset, verdictText } from "@haruhimemoe/compliance";
 
 // Any osu! API v2 beatmapset with the extended fields: each row's `beatmapset` in
 // GET /api/v2/beatmaps?ids[]=…, or GET /api/v2/beatmapsets/{id}.

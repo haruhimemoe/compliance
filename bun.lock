@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "@haruhime/compliance",
+      "name": "@haruhimemoe/compliance",
       "devDependencies": {
         "@biomejs/biome": "2.5.14",
         "@types/node": "26.6.2",

@@ -1,10 +1,10 @@
 # AGENTS.md
 
-`@haruhime/compliance`: one job. Given one osu! beatmapset's facts, say whether the content rules for officially supported osu! tournaments allow it. Keep it that way.
+`@haruhimemoe/compliance`: one job. Given one osu! beatmapset's facts, say whether the content rules for officially supported osu! tournaments allow it. Keep it that way.
 
 ## Rules
 
-- **No runtime dependencies.** No network, no database, no caching, no osu! client. Callers bring the data. A feature that needs one of those belongs in another `@haruhime/*` package or an app.
+- **No runtime dependencies.** No network, no database, no caching, no osu! client. Callers bring the data. A feature that needs one of those belongs in another `@haruhimemoe/*` package or an app.
 - **Match upstream.** `src/evaluate.ts` ports hburn7/omc-api's `validator.ts`. Every deviation is listed in the README's "Deviations from upstream" with the reason. The tag rule copies upstream exactly on purpose.
 - **Data is byte-for-byte.** Never edit or format `src/data/`. Refresh it with the steps in `docs/vendored-data.md`; the hashes there are tested.
 - **Public API is pinned** by `tests/exports.test.ts`. Adding or removing an export is a semver decision: say so in `CHANGELOG.md`.

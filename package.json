@@ -1,5 +1,5 @@
 {
-  "name": "@haruhime/compliance",
+  "name": "@haruhimemoe/compliance",
   "version": "0.1.0",
   "description": "Check osu! beatmapsets against the content rules for officially supported osu! tournaments. A port of hburn7/omc-api's rules, no network and no dependencies.",
   "keywords": [

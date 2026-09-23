@@ -28,7 +28,7 @@ export type Override = {
 };
 
 const fail = (file: string, detail: string): never => {
-  throw new Error(`@haruhime/compliance: src/data/${file} is malformed: ${detail}`);
+  throw new Error(`@haruhimemoe/compliance: src/data/${file} is malformed: ${detail}`);
 };
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>

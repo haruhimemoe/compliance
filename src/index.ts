@@ -1,6 +1,6 @@
 /**
  * @file src/index.ts
- * @desc @haruhime/compliance: check osu! beatmapsets against the content rules for officially
+ * @desc @haruhimemoe/compliance: check osu! beatmapsets against the content rules for officially
  *       supported osu! tournaments. No network, no dependencies: you bring osu!'s data.
  * @author David @dvhsh (https://dvh.sh)
  * @created Wed Sep 23, 2026

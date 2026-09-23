@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `@haruhime/compliance`. Versions follow [semver](https://semver.org): a rule or data change that can change a verdict is a minor version while we're on 0.x.
+All notable changes to `@haruhimemoe/compliance`. Versions follow [semver](https://semver.org): a rule or data change that can change a verdict is a minor version while we're on 0.x.
 
 ## 0.1.0 (unreleased)
 
