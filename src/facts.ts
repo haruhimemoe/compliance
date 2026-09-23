@@ -29,6 +29,7 @@ export type OsuBeatmapset = {
   /** Absent on a compact beatmapset. */
   availability?:
     | { download_disabled: boolean; more_information?: string | null | undefined }
+    | null
     | undefined;
 };
 

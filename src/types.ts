@@ -22,11 +22,16 @@ export type ComplianceStatus = (typeof COMPLIANCE_STATUSES)[number];
  */
 export type ComplianceReason = (typeof COMPLIANCE_REASONS)[number];
 
+/**
+ * `reason` is usually set on a disallowed verdict and absent otherwise, but a per-track override in
+ * the omc data can give disallowed or potential with no reason, or potential with `rightsholder`.
+ * Branch on `status`; use `reason` only to explain.
+ */
 export type ComplianceVerdict = {
   status: ComplianceStatus;
-  reason?: ComplianceReason;
+  reason?: ComplianceReason | undefined;
   /** The artist's notes from the omc data. May hold markdown links. */
-  notes?: string;
+  notes?: string | undefined;
 };
 
 /**

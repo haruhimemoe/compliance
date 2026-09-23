@@ -33,8 +33,8 @@ describe("vendored omc-api data", () => {
     "sources/banned.json",
     "LICENSE",
   ])("%s matches the hash in the doc", (file) => {
-    expect(doc).toContain(`| \`${file}\` |`);
-    expect(doc).toContain(sha256(file));
+    const row = doc.split("\n").find((line) => line.startsWith(`| \`${file}\` |`));
+    expect(row).toContain(`\`${sha256(file)}\``);
   });
 
   it("ships the MIT license, and the package license carries its notice", () => {

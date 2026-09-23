@@ -4,11 +4,13 @@ Checks osu! beatmapsets against the content rules for [officially supported osu!
 
 - The rules are a port of [hburn7/omc-api](https://github.com/hburn7/omc-api) (MIT), the engine behind the osu! Mappool Compliance checker and the Tournament Committee's site. Its service is closed to outside callers, so this package runs the same rules over copies of its data.
 - No network, no dependencies, no database. You bring the osu! data.
-- Runs anywhere modern JavaScript runs: Node 22+, Bun, Deno, bundlers, browsers. The whole package adds about 30 KB to a browser bundle (12 KB gzipped).
+- Runs anywhere modern JavaScript runs: Node 22.12+, Bun, Deno, bundlers, browsers. The whole package adds about 30 KB to a browser bundle (12 KB gzipped).
 
 This package gives a guide, not a ruling. The Tournament Committee decides. See [Limits](#limits).
 
 ## Install
+
+ESM only (Node 22.12+ can also `require()` it).
 
 ```sh
 bun add @haruhime/compliance
@@ -53,6 +55,8 @@ A verdict belongs to a beatmapset, not a difficulty. Check each set once and app
 | `RULE_LINKS` | The osu! wiki pages behind the rules. |
 | Types | `BeatmapsetFacts`, `ComplianceVerdict`, `ComplianceStatus`, `ComplianceReason`, `OsuBeatmapset`. |
 
+Branch on `status`. `reason` explains a verdict: it's set on almost every disallowed verdict, but a per-track override in the data can give disallowed or potential with no reason, or potential with `rightsholder`.
+
 `notes` holds the artist's notes from the omc data and may contain markdown links. Render them as text or parse the links yourself; never inject them as HTML.
 
 ### Reasons
@@ -96,7 +100,7 @@ These rarely change a verdict on real osu! data. The tag rule copies upstream ex
 
 ## Data and license
 
-MIT. See [LICENSE](LICENSE), which also carries omc-api's MIT notice (Copyright (c) 2025 hburn7) for the ported rules and the data in `src/data/`. The data's source, hashes and refresh steps are in [docs/vendored-data.md](docs/vendored-data.md).
+MIT. See [LICENSE](LICENSE), which also carries omc-api's MIT notice (Copyright (c) 2025 hburn7) for the ported rules and the data (`src/data/` in the repo, `dist/data/` in the installed package). The data's source, hashes and refresh steps are in [docs/vendored-data.md](docs/vendored-data.md).
 
 Not affiliated with osu!, ppy Pty Ltd, the osu! Tournament Committee or omc-api.
 
