@@ -10,7 +10,9 @@ This package gives a guide, not a ruling. The Tournament Committee decides. See 
 
 ## Install
 
-ESM only (Node 22.12+ can also `require()` it).
+ESM only (Node 22.12+ can also `require()` it; Node 22.12.0 itself prints an `ExperimentalWarning` for the CommonJS-loads-ESM `require()`, gone by 22.18.0).
+
+Bundling with Rollup needs [`@rollup/plugin-json`](https://github.com/rollup/plugins/tree/master/packages/json) for the `with { type: "json" }` data imports. Vite, esbuild and webpack need no extra config.
 
 ```sh
 bun add @haruhimemoe/compliance
@@ -32,7 +34,7 @@ const { beatmaps } = await response.json();
 const facts = factsFromOsuBeatmapset(beatmaps[0].beatmapset);
 if (facts) {
   const verdict = evaluateBeatmapset(facts);
-  // { status: "ok" } | { status: "potential", notes?: "…" } | { status: "disallowed", reason: "dmca" | … }
+  // { status, reason?, notes? }; see ComplianceVerdict
   console.log(verdict.status, verdictText(verdict));
 }
 ```
@@ -90,10 +92,11 @@ These rarely change a verdict on real osu! data. The tag rule copies upstream ex
 - **Source** is NFKC-normalized like artist and title; upstream compares it as sent. A source in full-width characters (`ＤＪＭＡＸ`) matches a banned source here and not upstream.
 - **Notes:** only the data's artist notes are returned. Upstream also fills generic notes per reason; use `verdictText` for that.
 - **Absent `more_information`** counts as no notice. Upstream checks `!== null`, so a missing field reads as a DMCA there. osu! always sends the key, so this only guards against a malformed response.
+- **Upstream's `skipLeaderboardCheck` option isn't ported.** It lets a caller opt out of rule 4 (Ranked/Approved/Loved → ok); this package always applies rule 4. That matches upstream's default (the option is off unless a caller sets it), so this only differs if you needed to turn it off.
 
 ## Limits
 
-- The lists are only as current as the vendored commit (`UPSTREAM`). Artists and labels change their minds; check the date.
+- The lists are only as current as the vendored commit (`UPSTREAM`). Artists and labels change their minds; check the date. Two known gaps against the live [Content usage permissions](https://osu.ppy.sh/wiki/en/Rules/Content_usage_permissions) wiki page's "Allowed, with exceptions" section (dated 2026-02-18 there, but edited since): gxxberlol was added to that section on 2026-04-18, and the vendored data at `bb356b3` predates it, so this package reads gxxberlol's two banned tracks ("KICKICKICKICKICKICKIKI" and "newb artist rave") as ok. Igorrr moved the other way: the wiki page now allows Igorrr only for collaborations that appear on Ruby My Dear's Featured Artist listing, but the vendored data still marks Igorrr disallowed outright, so this package is stricter than current policy for an Igorrr/Ruby My Dear collaboration.
 - Permission from an artist can override a verdict. The host emails proof to tournaments@ppy.sh, as the [Official support](https://osu.ppy.sh/wiki/en/Tournaments/Official_support) page explains.
 - `potential` means a person has to read the notes and decide.
 - The Tournament Committee has the final say.
@@ -110,3 +113,7 @@ Not affiliated with osu!, ppy Pty Ltd, the osu! Tournament Committee or omc-api.
 bun install
 bun run check && bun run typecheck && bun run test && bun run test:dist
 ```
+
+### Releasing
+
+Later releases go through `.github/workflows/release.yml` (npm's trusted publishing, no stored token): publish a GitHub release and it publishes to npm. The first `0.1.0` can't go through it, because npm only lets you configure a trusted publisher on a package that already exists. So the owner bootstraps it once: from a clean checkout of the tagged commit, after `bun run build` and every check passes, `npm publish --access public --provenance=false`. Then `npm trust github @haruhimemoe/compliance --file release.yml --repo haruhimemoe/compliance --env npm --allow-publish` (npm >= 11.15.0, 2FA required) turns on the trusted publisher, and every release after that goes through the workflow.

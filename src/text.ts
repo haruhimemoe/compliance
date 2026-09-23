@@ -8,13 +8,13 @@
 
 import type { ComplianceReason, ComplianceVerdict } from "./types.js";
 
-export const REASON_TEXT: Record<ComplianceReason, string> = {
-  dmca: "Taken down by a DMCA notice",
+export const REASON_TEXT: Readonly<Record<ComplianceReason, string>> = Object.freeze({
+  dmca: "Taken down, or osu! shows a content notice",
   artist: "This artist doesn't allow their music in osu!",
   fa_only: "Only this artist's Featured Artist tracks are allowed",
   source: "Comes from a game or label that doesn't allow its music in osu!",
   rightsholder: "The rights holder doesn't allow this track",
-};
+});
 export const OK_TEXT = "Allowed";
 export const POTENTIAL_TEXT = "Needs a closer look";
 export const DISALLOWED_TEXT = "Not allowed in officially supported tournaments";

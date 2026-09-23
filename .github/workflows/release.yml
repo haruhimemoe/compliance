@@ -40,12 +40,12 @@ jobs:
           TAG: ${{ github.event.release.tag_name }}
         run: test "v$(node -p "require('./package.json').version")" = "$TAG"
 
-      # A GitHub prerelease publishes under the "next" dist-tag, never "latest".
+      # A version with a prerelease part (a "-" in package.json) publishes under the "next"
+      # dist-tag, never "latest". This is about the version, not GitHub's prerelease checkbox.
       - name: Publish
-        env:
-          PRERELEASE: ${{ github.event.release.prerelease }}
         run: |
-          if [ "$PRERELEASE" = "true" ]; then
+          VERSION="$(node -p "require('./package.json').version")"
+          if [[ "$VERSION" == *-* ]]; then
             npm publish --provenance --access public --tag next
           else
             npm publish --provenance --access public

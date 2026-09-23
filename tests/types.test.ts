@@ -10,12 +10,37 @@
 
 import { expect, it } from "vitest";
 import {
+  type BeatmapsetFacts,
+  COMPLIANCE_REASONS,
+  COMPLIANCE_STATUSES,
   type ComplianceReason,
   type ComplianceVerdict,
+  evaluateBeatmapset,
   factsFromOsuBeatmapset,
   type OsuBeatmapset,
   verdictText,
 } from "../src/index.js";
+
+it("setId is optional; the rules don't read it", () => {
+  const facts: BeatmapsetFacts = {
+    status: "ranked",
+    artist: "a",
+    title: "t",
+    artistUnicode: "a",
+    titleUnicode: "t",
+    source: "",
+    tags: "",
+    trackId: null,
+    downloadDisabled: false,
+    moreInformation: null,
+  };
+  expect(evaluateBeatmapset(facts)).toEqual({ status: "ok" });
+});
+
+it("COMPLIANCE_STATUSES and COMPLIANCE_REASONS are frozen", () => {
+  expect(Object.isFrozen(COMPLIANCE_STATUSES)).toBe(true);
+  expect(Object.isFrozen(COMPLIANCE_REASONS)).toBe(true);
+});
 
 it("takes a reason that may be undefined", () => {
   const reason: ComplianceReason | undefined = undefined;

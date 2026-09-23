@@ -26,4 +26,12 @@ describe("verdictText", () => {
     expect(verdictText({ status: "disallowed" })).toBe(DISALLOWED_TEXT);
     expect(verdictText({ status: "ok" })).toBe(OK_TEXT);
   });
+
+  it("dmca also covers a content notice, matching the README table", () => {
+    expect(REASON_TEXT.dmca).toBe("Taken down, or osu! shows a content notice");
+  });
+
+  it("is frozen against mutation", () => {
+    expect(Object.isFrozen(REASON_TEXT)).toBe(true);
+  });
 });

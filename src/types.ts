@@ -6,8 +6,14 @@
  * @modified Wed Sep 23, 2026
  */
 
-export const COMPLIANCE_STATUSES = ["ok", "potential", "disallowed"] as const;
-export const COMPLIANCE_REASONS = ["dmca", "artist", "source", "rightsholder", "fa_only"] as const;
+export const COMPLIANCE_STATUSES = Object.freeze(["ok", "potential", "disallowed"] as const);
+export const COMPLIANCE_REASONS = Object.freeze([
+  "dmca",
+  "artist",
+  "source",
+  "rightsholder",
+  "fa_only",
+] as const);
 
 /** ok: allowed. potential: needs a closer look (read `notes`). disallowed: not allowed. */
 export type ComplianceStatus = (typeof COMPLIANCE_STATUSES)[number];
@@ -39,7 +45,8 @@ export type ComplianceVerdict = {
  * `factsFromOsuBeatmapset`, or by hand from a cache.
  */
 export type BeatmapsetFacts = {
-  setId: number;
+  /** Not read by `evaluateBeatmapset`; keep it only if you correlate a verdict back to a cache. */
+  setId?: number;
   /** osu!'s status string: "ranked", "approved", "loved", "qualified", "pending", "wip", "graveyard". */
   status: string;
   artist: string;

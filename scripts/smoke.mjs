@@ -42,6 +42,7 @@ assert.ok(
 );
 assert.ok(existsSync(new URL("../dist/index.d.ts", import.meta.url)), "dist/index.d.ts missing");
 // The shipped data must be the vendored bytes, so the hashes in docs/vendored-data.md hold.
+// Match the file's own row, not the whole doc, so a hash that moved to another file's row fails.
 const doc = readFileSync(new URL("../docs/vendored-data.md", import.meta.url), "utf8");
 for (const file of [
   "artists/restricted.json",
@@ -52,9 +53,7 @@ for (const file of [
 ]) {
   const bytes = readFileSync(new URL(`../dist/data/${file}`, import.meta.url));
   const hash = createHash("sha256").update(bytes).digest("hex");
-  assert.ok(
-    doc.includes(`| \`${file}\` |`) && doc.includes(hash),
-    `dist/data/${file} differs from the vendored bytes`,
-  );
+  const row = doc.split("\n").find((line) => line.startsWith(`| \`${file}\` |`));
+  assert.ok(row?.includes(`\`${hash}\``), `dist/data/${file} differs from the vendored bytes`);
 }
 console.log("smoke: ok");

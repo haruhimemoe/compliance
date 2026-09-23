@@ -50,6 +50,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:dist": "bun run build && node scripts/smoke.mjs",
+    "check:consumer": "bun run build && node scripts/check-consumer.mjs",
     "prepublishOnly": "bun run check && bun run typecheck && bun run test && bun run test:dist",
     "test:coverage": "vitest run --coverage"
   },
