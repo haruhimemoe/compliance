@@ -80,7 +80,7 @@ describe("factsFromOsuBeatmapset", () => {
     ["availability", { availability: undefined }],
     ["track_id", { track_id: undefined }],
     ["tags", { tags: undefined }],
-  ])("returns null for a compact beatmapset without %s", (_, missing) => {
+  ])("returns null when %s is absent", (_, missing) => {
     expect(factsFromOsuBeatmapset({ ...set(), ...missing })).toBeNull();
   });
 

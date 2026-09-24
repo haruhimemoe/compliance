@@ -17,7 +17,7 @@ Not vendored: `data/strict/` (the Chunithm and maimai lists). Only omc's `strict
 
 ## Refreshing
 
-1. `git clone https://github.com/hburn7/omc-api "$TMPDIR/omc-api"` and note `git -C "$TMPDIR/omc-api" rev-parse HEAD`.
+1. `git clone https://github.com/hburn7/omc-api "${TMPDIR:-/tmp}/omc-api"` and note `git -C "${TMPDIR:-/tmp}/omc-api" rev-parse HEAD`.
 2. Read the diff of `src/lib/validator.ts` since the commit above. If a rule changed, write the failing test in `tests/evaluate.test.ts` first, then port the change to `src/evaluate.ts`.
 3. Copy the four data files and `LICENSE` over `src/data/`. Upstream reads only the first file in `data/labels/`; if it added a label file, decide whether to port more and say so in the changelog.
 4. Update `UPSTREAM` in `src/upstream.ts`, then the commit and hashes in this file (`shasum -a 256 src/data/*/*.json src/data/LICENSE`, or `sha256sum` on Linux).

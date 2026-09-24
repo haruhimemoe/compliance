@@ -47,7 +47,7 @@ if (facts) {
 
 The cast trusts osu!'s response. Validate it first if you need to.
 
-`factsFromOsuBeatmapset` returns `null` when `availability`, `track_id` or `tags` is missing. A compact beatmapset, which osu! nests in some responses, lacks them. Ask `GET /api/v2/beatmapsets/{id}` for that set instead.
+`factsFromOsuBeatmapset` returns `null` when `availability`, `track_id` or `tags` is missing. A compact beatmapset, which osu! nests in some responses, has no `tags` and no `availability`. Ask `GET /api/v2/beatmapsets/{id}` for that set instead.
 
 Using [`@haruhimemoe/osu`](https://github.com/haruhimemoe/osu)? The `OsuBeatmapsetExtended` sets its `getBeatmapsets` returns go straight into `factsFromOsuBeatmapset`.
 
@@ -147,11 +147,11 @@ Returns `REASON_TEXT[reason]` when the verdict has a reason. Otherwise `POTENTIA
 | `downloadDisabled` | `boolean` | `availability.download_disabled`. |
 | `moreInformation` | `string \| null` | `availability.more_information`. `null` when osu! shows no content notice. |
 
-`ComplianceVerdict` is `{ status: ComplianceStatus; reason?: ComplianceReason; notes?: string }`.
+`ComplianceVerdict` is `{ status: ComplianceStatus; reason?: ComplianceReason | undefined; notes?: string | undefined }`.
 
 `ComplianceStatus` is `"ok" | "potential" | "disallowed"`. `ComplianceReason` is `"dmca" | "artist" | "source" | "rightsholder" | "fa_only"`.
 
-`OsuBeatmapset` lists the osu! API v2 beatmapset fields the rules read: `id`, `status`, `artist`, `title`, and the optional `artist_unicode`, `title_unicode`, `source`, `tags`, `track_id` and `availability` (`{ download_disabled, more_information? }`). The optional ones also accept `null`. Extra fields are ignored, so a beatmapset typed by another osu! client usually fits.
+`OsuBeatmapset` lists the osu! API v2 beatmapset fields the rules read: `id`, `status`, `artist`, `title`, and the optional `artist_unicode`, `title_unicode`, `source`, `tags`, `track_id` and `availability` (`{ download_disabled, more_information? }`). The optional ones also accept `null` and an explicit `undefined`. Extra fields are ignored, so a beatmapset typed by another osu! client usually fits.
 
 ### Reasons
 
@@ -196,16 +196,18 @@ These rarely change a verdict on real osu! data. The tag rule copies upstream ex
 ## Limits
 
 - The lists are only as current as the vendored commit (`UPSTREAM`). Artists and labels change their minds; check the date.
-- Two known gaps against the "Allowed, with exceptions" section of the live [Content usage permissions](https://osu.ppy.sh/wiki/en/Rules/Content_usage_permissions) page (dated 2026-02-18 there, but edited since):
-  - **gxxberlol** was added on 2026-04-18. The vendored data at `bb356b3` predates it, so this package reads gxxberlol's two banned tracks ("KICKICKICKICKICKICKIKI" and "newb artist rave") as ok.
+- Known gaps against the "Allowed, with exceptions" section of the live [Content usage permissions](https://osu.ppy.sh/wiki/en/Rules/Content_usage_permissions) page (dated 2026-02-18 there, but edited since):
+  - **gxxberlol** was added on 2026-04-18. The vendored data at `bb356b3` doesn't list them, so this package reads gxxberlol's two banned tracks ("KICKICKICKICKICKICKIKI" and "newb artist rave") as ok.
+  - **Mlumìn // SoundWarper** was added on 2026-02-07 and isn't in the vendored data either. The page allows only their "Spinner (DnB Remix)" and asks you to get the artists' permission for any other track. This package reads every track of theirs as ok.
   - **Igorrr** moved the other way. The page now allows Igorrr only for collaborations on Ruby My Dear's Featured Artist listing, but the vendored data still marks Igorrr disallowed outright. This package is stricter than current policy for an Igorrr/Ruby My Dear collaboration.
+  - **MEGAREX** tracks are allowed only when they're on a Featured Artist listing. The data catches the rest only through the tracks listed in `labels/MEGAREX.json` (rule 6) and a MEGAREX source (rule 5). Any other MEGAREX track reads as ok.
 - Permission from an artist can override a verdict. The host emails proof to tournaments@ppy.sh, as the [Official support](https://osu.ppy.sh/wiki/en/Tournaments/Official_support) page explains.
 - `potential` means a person has to read the notes and decide.
 - The Tournament Committee has the final say.
 
 ## Compatibility
 
-- **ESM only.** Node 22.12+ can also `require()` it. Node 22.12.0 itself prints an `ExperimentalWarning` for the CommonJS-loads-ESM `require()`; it's gone by 22.18.0.
+- **ESM only.** Node 22.12+ can also `require()` it. Node 22.12.0 prints an `ExperimentalWarning` for that `require()` unless the calling file is under `node_modules`. Node 22.13.0 and later don't.
 - **Node** 22.12 or later (`engines`). CI runs the built package on Node 22.12 and 24.
 - **Bun** and **Deno** (through the `npm:` specifier).
 - **Bundlers:** Vite, esbuild and webpack need no extra config. Rollup needs [`@rollup/plugin-json`](https://github.com/rollup/plugins/tree/master/packages/json) for the `with { type: "json" }` data imports. The whole package adds about 30 KB to a browser bundle (12 KB gzipped), most of it the data.

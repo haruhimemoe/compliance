@@ -19,7 +19,7 @@ bun run check && bun run typecheck && bun run test && bun run test:dist
 | Script | What it does |
 | --- | --- |
 | `bun run check` | Biome lint and format check. `bun run check:fix` applies fixes. |
-| `bun run typecheck` | `tsc --noEmit` over `src/` and `tests/`. |
+| `bun run typecheck` | `tsc --noEmit` over `src/`, `tests/` and `vitest.config.ts`. |
 | `bun run test` | Vitest. `bun run test:watch` keeps it running. |
 | `bun run test:coverage` | Vitest with a 95% coverage floor on `src/`. CI runs this one. |
 | `bun run test:dist` | Builds `dist/` and imports it in Node (`scripts/smoke.mjs`). |

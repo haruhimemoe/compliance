@@ -16,5 +16,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `isLeaderboardStatus`, `COMPLIANCE_STATUSES`, `COMPLIANCE_REASONS`, `UPSTREAM` and `RULE_LINKS`.
 - Artist, override, source and label data vendored from omc-api at `bb356b3` (2026-06-28), with hashes pinned in `docs/vendored-data.md`.
 
-[unreleased]: https://github.com/haruhimemoe/compliance/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/haruhimemoe/compliance/releases/tag/v0.1.0
+[unreleased]: https://github.com/haruhimemoe/compliance/compare/085262bc158d7b8ce2580b62a7b6b147b7923ed5...HEAD
+[0.1.0]: https://github.com/haruhimemoe/compliance/tree/085262bc158d7b8ce2580b62a7b6b147b7923ed5

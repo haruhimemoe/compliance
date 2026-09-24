@@ -24,7 +24,7 @@ export type OsuBeatmapset = {
   source?: string | null | undefined;
   /** Absent (not null) on a compact beatmapset. */
   tags?: string | null | undefined;
-  /** Absent (not null) on a compact beatmapset. */
+  /** null when the song isn't a Featured Artist track. */
   track_id?: number | null | undefined;
   /** Absent on a compact beatmapset. */
   availability?:
