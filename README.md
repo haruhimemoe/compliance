@@ -107,13 +107,6 @@ MIT. See [LICENSE](LICENSE), which also carries omc-api's MIT notice (Copyright 
 
 Not affiliated with osu!, ppy Pty Ltd, the osu! Tournament Committee or omc-api.
 
-## Develop
+## Contributing
 
-```sh
-bun install
-bun run check && bun run typecheck && bun run test && bun run test:dist
-```
-
-### Releasing
-
-Later releases go through `.github/workflows/release.yml` (npm's trusted publishing, no stored token): publish a GitHub release and it publishes to npm. The first `0.1.0` can't go through it, because npm only lets you configure a trusted publisher on a package that already exists. So the owner bootstraps it once: from a clean checkout of the tagged commit, after `bun run build` and every check passes, `npm publish --access public --provenance=false`. Then `npm trust github @haruhimemoe/compliance --file release.yml --repo haruhimemoe/compliance --env npm --allow-publish` (npm >= 11.15.0, 2FA required) turns on the trusted publisher, and every release after that goes through the workflow.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and how to submit a change, and [CHANGELOG.md](CHANGELOG.md) for release history.
