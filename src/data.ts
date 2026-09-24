@@ -13,6 +13,11 @@ import megarexTracks from "./data/labels/MEGAREX.json" with { type: "json" };
 import edgeCases from "./data/overrides/edge-cases.json" with { type: "json" };
 import bannedSources from "./data/sources/banned.json" with { type: "json" };
 
+/**
+ * @function nfkc
+ * @param value {string} any text from osu! or the data
+ * @returns {string} the text NFKC-normalized, so full-width and compatibility forms compare equal
+ */
 export const nfkc = (value: string): string => value.normalize("NFKC");
 
 export type ArtistRule = {
