@@ -20,6 +20,6 @@ Not vendored: `data/strict/` (the Chunithm and maimai lists). Only omc's `strict
 1. `git clone https://github.com/hburn7/omc-api "$TMPDIR/omc-api"` and note `git -C "$TMPDIR/omc-api" rev-parse HEAD`.
 2. Read the diff of `src/lib/validator.ts` since the commit above. If a rule changed, write the failing test in `tests/evaluate.test.ts` first, then port the change to `src/evaluate.ts`.
 3. Copy the four data files and `LICENSE` over `src/data/`. Upstream reads only the first file in `data/labels/`; if it added a label file, decide whether to port more and say so in the changelog.
-4. Update `UPSTREAM` in `src/upstream.ts`, then the commit and hashes in this file (`shasum -a 256 src/data/*/*.json src/data/LICENSE`).
+4. Update `UPSTREAM` in `src/upstream.ts`, then the commit and hashes in this file (`shasum -a 256 src/data/*/*.json src/data/LICENSE`, or `sha256sum` on Linux).
 5. `bun run test`. The rule tests pin verdicts against today's lists. If a data change moves one, look at why before updating the test.
-6. Add a changelog entry and bump the version. A data refresh that can change a verdict is a minor version.
+6. Add a line under `## [Unreleased]` in `CHANGELOG.md` naming the new upstream commit, and say whether it can change a verdict. One that can is a minor version while on 0.x; the maintainers pick the number when they release.

@@ -1,0 +1,37 @@
+# @haruhimemoe/compliance
+
+> Checks osu! beatmapsets against the content rules for officially supported osu! tournaments. A TypeScript port of hburn7/omc-api's rules over vendored copies of its data: pass one beatmapset's osu! API v2 fields and get back ok, potential (needs a closer look) or disallowed, with a reason. No network and no runtime dependencies. ESM for Node 22.12+, Bun, Deno and bundlers. A guide, not a ruling: the osu! Tournament Committee decides.
+
+Main exports: `evaluateBeatmapset(facts)`, `factsFromOsuBeatmapset(set)`, `verdictText(verdict)`, `isLeaderboardStatus(status)`, the text constants, `COMPLIANCE_STATUSES`, `COMPLIANCE_REASONS`, `UPSTREAM` and `RULE_LINKS`. A verdict belongs to a beatmapset, not a difficulty. Branch on `status`; `reason` only explains.
+
+## Docs
+
+- [Install](https://github.com/haruhimemoe/compliance#install): bun, npm and deno commands
+- [Use](https://github.com/haruhimemoe/compliance#use): fetch a beatmapset from the osu! API v2, build the facts, get a verdict
+- [API](https://github.com/haruhimemoe/compliance#api): every export with its signature, the constants' values and the types' fields
+- [Errors](https://github.com/haruhimemoe/compliance#errors): what throws and when
+- [Rule order](https://github.com/haruhimemoe/compliance#rule-order): the seven rules, first match wins
+- [Deviations from upstream](https://github.com/haruhimemoe/compliance#deviations-from-upstream): where this package differs from omc-api, and why
+- [Limits](https://github.com/haruhimemoe/compliance#limits): known gaps between the vendored data and the live osu! wiki
+- [Compatibility](https://github.com/haruhimemoe/compliance#compatibility): Node, Bun, Deno, bundlers and TypeScript
+- [Vendored data](https://github.com/haruhimemoe/compliance/blob/main/docs/vendored-data.md): the upstream commit, file hashes and refresh steps
+
+## Package
+
+- [npm](https://www.npmjs.com/package/@haruhimemoe/compliance): published versions
+- [Source](https://github.com/haruhimemoe/compliance/tree/main/src): the rules, the facts mapper and the vendored data
+- [License](https://github.com/haruhimemoe/compliance/blob/main/LICENSE): MIT, with omc-api's MIT notice for the ported rules and data
+
+## Related
+
+- [hburn7/omc-api](https://github.com/hburn7/omc-api): the upstream rules and data this package ports
+- [@haruhimemoe/osu](https://github.com/haruhimemoe/osu): osu! API v2 client whose extended beatmapsets feed `factsFromOsuBeatmapset`
+- [Content usage permissions](https://osu.ppy.sh/wiki/en/Rules/Content_usage_permissions): the osu! wiki page the artist rules come from
+- [Official support](https://osu.ppy.sh/wiki/en/Tournaments/Official_support): the osu! wiki page on officially supported tournaments
+- [haruhime.moe](https://haruhime.moe): home of the haruhime osu! tournament tools
+
+## Optional
+
+- [CHANGELOG](https://github.com/haruhimemoe/compliance/blob/main/CHANGELOG.md): release history
+- [CONTRIBUTING](https://github.com/haruhimemoe/compliance/blob/main/CONTRIBUTING.md): setup, checks and how to submit a change
+- [AGENTS.md](https://github.com/haruhimemoe/compliance/blob/main/AGENTS.md): conventions and file layout for AI agents working on this repo
