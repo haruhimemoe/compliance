@@ -1,3 +1,5 @@
+<p align="center"><a href="https://github.com/haruhimemoe/compliance"><picture><source media="(prefers-color-scheme: light)" srcset="https://www.haruhime.moe/brand/repos/compliance-banner-on-light.svg"><img alt="@haruhimemoe/compliance" src="https://www.haruhime.moe/brand/repos/compliance-banner.svg" width="640"></picture></a></p>
+
 # @haruhimemoe/compliance
 
 Checks osu! beatmapsets against the content rules for [officially supported osu! tournaments](https://osu.ppy.sh/wiki/en/Tournaments/Official_support). You pass in a beatmapset's osu! fields and get back **ok**, **potential** (needs a closer look) or **disallowed**, with a reason.
@@ -5,6 +7,7 @@ Checks osu! beatmapsets against the content rules for [officially supported osu!
 - The rules are a port of [hburn7/omc-api](https://github.com/hburn7/omc-api) (MIT), the engine behind the osu! Mappool Compliance checker and the Tournament Committee's site. Its service is closed to outside callers, so this package runs the same rules over copies of its data.
 - No network, no dependencies, no database. You bring the osu! data.
 - Runs on Node 22.12+, Bun, Deno and in browsers through a bundler. See [Compatibility](#compatibility).
+- To check maps without writing code, use the compliance check on [pools.haruhime.moe](https://pools.haruhime.moe/check) (in beta), which runs this package: paste beatmap IDs or links, a pool or a pack key.
 
 This package gives a guide, not a ruling. The Tournament Committee decides. See [Limits](#limits).
 
@@ -225,3 +228,4 @@ Not affiliated with osu!, ppy Pty Ltd, the osu! Tournament Committee or omc-api.
 - [CHANGELOG.md](CHANGELOG.md) for release history
 - [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and how to submit a change
 - [SECURITY.md](SECURITY.md) to report a vulnerability
+- [Discord](https://discord.gg/bKy9kjMV4y) for questions and feedback

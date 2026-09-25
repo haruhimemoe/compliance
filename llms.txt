@@ -28,7 +28,8 @@ Main exports: `evaluateBeatmapset(facts)`, `factsFromOsuBeatmapset(set)`, `verdi
 - [@haruhimemoe/osu](https://github.com/haruhimemoe/osu): osu! API v2 client whose extended beatmapsets feed `factsFromOsuBeatmapset`
 - [Content usage permissions](https://osu.ppy.sh/wiki/en/Rules/Content_usage_permissions): the osu! wiki page the artist rules come from
 - [Official support](https://osu.ppy.sh/wiki/en/Tournaments/Official_support): the osu! wiki page on officially supported tournaments
-- [haruhime.moe](https://haruhime.moe): home of the haruhime osu! tournament tools
+- [haruhime.moe](https://www.haruhime.moe): home of the haruhime osu! tournament tools
+- [pools.haruhime.moe](https://pools.haruhime.moe/check): osu! mappools for tournament hosts, in beta; its compliance check runs this package
 
 ## Optional
 
