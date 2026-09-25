@@ -228,4 +228,4 @@ Not affiliated with osu!, ppy Pty Ltd, the osu! Tournament Committee or omc-api.
 - [CHANGELOG.md](CHANGELOG.md) for release history
 - [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and how to submit a change
 - [SECURITY.md](SECURITY.md) to report a vulnerability
-- [Discord](https://discord.gg/bKy9kjMV4y) for questions and feedback
+- [haruhime.moe Discord server](https://discord.gg/bKy9kjMV4y) for questions and feedback
