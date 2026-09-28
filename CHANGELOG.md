@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- `evaluateBeatmapset` reads a missing `moreInformation` (hand-built facts, or a row without the column) as no content notice, like `factsFromOsuBeatmapset` does. Before, it returned disallowed/dmca for every set.
+- The data check at import rejects an empty artist name (`artists/restricted.json`, `labels/MEGAREX.json`) or track name (`labels/MEGAREX.json`). One would have matched every title. The shipped data passes.
+- The data error names the file as `data/<file>`, which exists in the installed package, instead of `src/data/<file>`.
+- The README's Limits say rule 6 is a substring match and name the short track names that flag unrelated titles.
+
 ## [0.1.0] - 2026-09-23
 
 ### Added

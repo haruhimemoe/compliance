@@ -4,7 +4,7 @@
  *       the file's name instead of producing wrong verdicts.
  * @author David @dvhsh (https://dvh.sh)
  * @created Wed Sep 23, 2026
- * @modified Wed Sep 23, 2026
+ * @modified Mon Sep 28, 2026
  */
 
 import { describe, expect, it } from "vitest";
@@ -47,6 +47,8 @@ describe("malformed data", () => {
     ["not an object", []],
     ["an unknown status", { A: { status: "banned" } }],
     ["notes that aren't text", { A: { status: "potential", notes: 1 } }],
+    ["an empty name", { "": { status: "disallowed" } }],
+    ["a blank name", { " \u3000": { status: "disallowed" } }],
   ])("artists: rejects %s", (_, raw) => {
     expect(() => parseArtists(raw)).toThrow("artists/restricted.json");
   });
@@ -74,6 +76,8 @@ describe("malformed data", () => {
   it.each([
     ["not an object", ["x"]],
     ["tracks that aren't a list of names", { lapix: "Cave of Points" }],
+    ["an empty artist", { "": ["Cave of Points"] }],
+    ["an empty track", { lapix: ["Cave of Points", ""] }],
   ])("label: rejects %s", (_, raw) => {
     expect(() => parseLabel(raw)).toThrow("labels/MEGAREX.json");
   });

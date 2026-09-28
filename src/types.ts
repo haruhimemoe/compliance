@@ -3,10 +3,12 @@
  * @desc The shapes the rules read and return: one beatmapset's facts from osu!, and a verdict.
  * @author David @dvhsh (https://dvh.sh)
  * @created Wed Sep 23, 2026
- * @modified Wed Sep 23, 2026
+ * @modified Mon Sep 28, 2026
  */
 
+/** Every verdict status, from allowed to not (frozen). */
 export const COMPLIANCE_STATUSES = Object.freeze(["ok", "potential", "disallowed"] as const);
+/** Every reason a verdict can give for potential or disallowed (frozen). */
 export const COMPLIANCE_REASONS = Object.freeze([
   "dmca",
   "artist",

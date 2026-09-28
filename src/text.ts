@@ -3,11 +3,12 @@
  * @desc Verdicts in plain words, for anyone showing a result to a person.
  * @author David @dvhsh (https://dvh.sh)
  * @created Wed Sep 23, 2026
- * @modified Wed Sep 23, 2026
+ * @modified Mon Sep 28, 2026
  */
 
 import type { ComplianceReason, ComplianceVerdict } from "./types.js";
 
+/** A short sentence per reason, for users (frozen). */
 export const REASON_TEXT: Readonly<Record<ComplianceReason, string>> = Object.freeze({
   dmca: "Taken down, or osu! shows a content notice",
   artist: "This artist doesn't allow their music in osu!",
@@ -15,8 +16,11 @@ export const REASON_TEXT: Readonly<Record<ComplianceReason, string>> = Object.fr
   source: "Comes from a game or label that doesn't allow its music in osu!",
   rightsholder: "The rights holder doesn't allow this track",
 });
+/** verdictText's label for an ok verdict. */
 export const OK_TEXT = "Allowed";
+/** verdictText's label for a potential verdict. */
 export const POTENTIAL_TEXT = "Needs a closer look";
+/** verdictText's label for a disallowed verdict. */
 export const DISALLOWED_TEXT = "Not allowed in officially supported tournaments";
 
 /**

@@ -148,7 +148,7 @@ Returns `REASON_TEXT[reason]` when the verdict has a reason. Otherwise `POTENTIA
 | `tags` | `string` | `tags` as sent (space-separated). `""` when there are none. |
 | `trackId` | `number \| null` | `track_id`. `null` when the song isn't a Featured Artist track. |
 | `downloadDisabled` | `boolean` | `availability.download_disabled`. |
-| `moreInformation` | `string \| null` | `availability.more_information`. `null` when osu! shows no content notice. |
+| `moreInformation` | `string \| null` | `availability.more_information`. `null` when osu! shows no content notice. A missing field (facts built by hand, a row without the column) also counts as no notice. |
 
 `ComplianceVerdict` is `{ status: ComplianceStatus; reason?: ComplianceReason | undefined; notes?: string | undefined }`.
 
@@ -170,7 +170,7 @@ Returns `REASON_TEXT[reason]` when the verdict has a reason. Otherwise `POTENTIA
 
 `evaluateBeatmapset`, `factsFromOsuBeatmapset` and `verdictText` don't throw on input that matches their types, and they don't validate it either. From plain JavaScript, a missing string field in `BeatmapsetFacts` can make `evaluateBeatmapset` throw a `TypeError`.
 
-The package checks its data files when it's first imported and throws an `Error` naming the file if one is malformed. The published data passes that check.
+The package checks its data files when it's first imported and throws an `Error` naming the file (as `data/<file>`, under `dist/` in the installed package) if one is malformed, including an empty artist or track name, which would otherwise match every title. The published data passes that check.
 
 ## Rule order
 
@@ -192,7 +192,7 @@ These rarely change a verdict on real osu! data. The tag rule copies upstream ex
 
 - **Source** is NFKC-normalized like artist and title; upstream compares it as sent. A source in full-width characters (`ＤＪＭＡＸ`) matches a banned source here and not upstream.
 - **Notes:** only the data's artist notes are returned. Upstream also fills generic notes per reason; use `verdictText` for that.
-- **Absent `more_information`** counts as no notice. Upstream checks `!== null`, so a missing field reads as a DMCA there. osu! always sends the key, so this only guards against a malformed response.
+- **Absent `more_information`** counts as no notice, in `factsFromOsuBeatmapset` and in `evaluateBeatmapset` (a `moreInformation` that is `undefined`). Upstream checks `!== null`, so a missing field reads as a DMCA there. osu! always sends the key, so this only guards against a malformed response or hand-built facts.
 - **Upstream's `skipLeaderboardCheck` option isn't ported.** It lets a caller opt out of rule 4 (Ranked/Approved/Loved → ok); this package always applies rule 4. That matches upstream's default (the option is off unless a caller sets it), so this only differs if you needed to turn it off.
 - **Upstream's `strict` option isn't ported.** It also checks artist and title against Chunithm and maimai track lists (`data/strict/`), as `source`. Upstream suggests it for world cups; it goes past the published rules, so this package doesn't ship those lists. `strict` is off by default upstream, so the default answers agree.
 
@@ -204,6 +204,7 @@ These rarely change a verdict on real osu! data. The tag rule copies upstream ex
   - **Mlumìn // SoundWarper** was added on 2026-02-07 and isn't in the vendored data either. The page allows only their "Spinner (DnB Remix)" and asks you to get the artists' permission for any other track. This package reads every track of theirs as ok.
   - **Igorrr** moved the other way. The page now allows Igorrr only for collaborations on Ruby My Dear's Featured Artist listing, but the vendored data still marks Igorrr disallowed outright. This package is stricter than current policy for an Igorrr/Ruby My Dear collaboration.
   - **MEGAREX** tracks are allowed only when they're on a Featured Artist listing. The data catches the rest only through the tracks listed in `labels/MEGAREX.json` (rule 6) and a MEGAREX source (rule 5). Any other MEGAREX track reads as ok.
+- Rule 6 (label tracks) is a substring match, as upstream's is: a title that contains a listed track name, or the part of it before the first `(`, is flagged. Short track names therefore flag unrelated titles by the same artist. YUKIYANAGI's listed "ID (feat. ...)" reduces to "id", so "Liquid Midnight" reads as disallowed/rightsholder; Mameyudoufu's "Point", "Wave" and "あわ" catch titles like "Microwave" or "しあわせ". Check a rightsholder verdict for these artists by hand.
 - Permission from an artist can override a verdict. The host emails proof to tournaments@ppy.sh, as the [Official support](https://osu.ppy.sh/wiki/en/Tournaments/Official_support) page explains.
 - `potential` means a person has to read the notes and decide.
 - The Tournament Committee has the final say.

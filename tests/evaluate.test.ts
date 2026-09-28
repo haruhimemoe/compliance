@@ -5,7 +5,7 @@
  *       Cases mirror upstream's src/test/validator.test.ts against the vendored data.
  * @author David @dvhsh (https://dvh.sh)
  * @created Wed Sep 23, 2026
- * @modified Wed Sep 23, 2026
+ * @modified Mon Sep 28, 2026
  */
 
 import { describe, expect, it } from "vitest";
@@ -253,16 +253,22 @@ describe("evaluateBeatmapset", () => {
     });
     it("normalizes with NFKC before matching", () => {
       expect(verdict({ artist: "Ｉｇｏｒｒｒ" }).reason).toBe("artist");
-      expect(verdict({ artist: "owl*tree", artistUnicode: "owl＊tree", title: "Teriqma" })).toEqual(
-        {
-          status: "ok",
-        },
+      // Full-width letters only match the MEGAREX list once NFKC turns them into "lapix".
+      expect(verdict({ artist: "ｌａｐｉｘ", title: "Cave of Points" }).reason).toBe(
+        "rightsholder",
       );
     });
-    it("leaves a CJK artist that isn't listed alone", () => {
+    it("flags a CJK label artist's listed track, and only that track", () => {
+      expect(verdict({ artist: "sakuzyo", artistUnicode: "削除", title: "FAFNIR" }).reason).toBe(
+        "rightsholder",
+      );
       expect(verdict({ artist: "sakuzyo", artistUnicode: "削除", title: "Cyberozar" })).toEqual({
         status: "ok",
       });
+    });
+    it("reads a missing moreInformation as no content notice", () => {
+      const { moreInformation: _, ...rest } = facts();
+      expect(evaluateBeatmapset(rest as BeatmapsetFacts)).toEqual({ status: "ok" });
     });
   });
 });

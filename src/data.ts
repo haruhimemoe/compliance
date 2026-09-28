@@ -5,13 +5,14 @@
  *       here, so the rules compare like with like. A bad re-vendor throws on the first import.
  * @author David @dvhsh (https://dvh.sh)
  * @created Wed Sep 23, 2026
- * @modified Wed Sep 23, 2026
+ * @modified Mon Sep 28, 2026
  */
 
 import restrictedArtists from "./data/artists/restricted.json" with { type: "json" };
 import megarexTracks from "./data/labels/MEGAREX.json" with { type: "json" };
 import edgeCases from "./data/overrides/edge-cases.json" with { type: "json" };
 import bannedSources from "./data/sources/banned.json" with { type: "json" };
+import { COMPLIANCE_STATUSES, type ComplianceStatus } from "./types.js";
 
 /**
  * @function nfkc
@@ -28,12 +29,12 @@ export type ArtistRule = {
 export type Override = {
   artist: string;
   title: string;
-  resultOverride: "ok" | "potential" | "disallowed";
+  resultOverride: ComplianceStatus;
   failureReasonOverride: string | null;
 };
 
 const fail = (file: string, detail: string): never => {
-  throw new Error(`@haruhimemoe/compliance: src/data/${file} is malformed: ${detail}`);
+  throw new Error(`@haruhimemoe/compliance: data/${file} is malformed: ${detail}`);
 };
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -43,7 +44,10 @@ const isStringArray = (value: unknown): value is string[] =>
   Array.isArray(value) && value.every((item) => typeof item === "string");
 
 const ARTIST_STATUSES: ReadonlySet<string> = new Set(["fa_only", "potential", "disallowed"]);
-const RESULT_OVERRIDES: ReadonlySet<string> = new Set(["ok", "potential", "disallowed"]);
+const RESULT_OVERRIDES: ReadonlySet<string> = new Set<string>(COMPLIANCE_STATUSES);
+
+// An empty name would match everything: /\b\b/ fits any title, and every title includes "".
+const isBlank = (name: string): boolean => !nfkc(name).trim();
 
 /**
  * @function parseArtists
@@ -55,6 +59,7 @@ export const parseArtists = (raw: unknown): ReadonlyMap<string, ArtistRule> => {
   if (!isRecord(raw)) return fail(file, "expected an object");
   const rules = new Map<string, ArtistRule>();
   for (const [name, rule] of Object.entries(raw)) {
+    if (isBlank(name)) return fail(file, "empty artist name");
     if (!isRecord(rule) || typeof rule.status !== "string" || !ARTIST_STATUSES.has(rule.status)) {
       return fail(file, `bad status for ${JSON.stringify(name)}`);
     }
@@ -91,7 +96,7 @@ export const parseOverrides = (raw: unknown): readonly Override[] => {
     return {
       artist: nfkc(entry.artist),
       title: nfkc(entry.title),
-      resultOverride: entry.resultOverride as Override["resultOverride"],
+      resultOverride: entry.resultOverride as ComplianceStatus,
       failureReasonOverride: entry.failureReasonOverride ?? null,
     };
   });
@@ -119,7 +124,10 @@ export const parseLabel = (raw: unknown): readonly (readonly [string, readonly s
   const file = "labels/MEGAREX.json";
   if (!isRecord(raw)) return fail(file, "expected an object");
   return Object.entries(raw).map(([artist, tracks]) => {
-    if (!isStringArray(tracks)) return fail(file, `bad tracks for ${JSON.stringify(artist)}`);
+    if (isBlank(artist)) return fail(file, "empty artist name");
+    if (!isStringArray(tracks) || tracks.some(isBlank)) {
+      return fail(file, `bad tracks for ${JSON.stringify(artist)}`);
+    }
     return [nfkc(artist), tracks.map(nfkc)] as const;
   });
 };

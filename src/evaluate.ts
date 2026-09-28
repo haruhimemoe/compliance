@@ -7,7 +7,7 @@
  *       tags, which follow upstream's rule exactly. Deviations from upstream are in the README.
  * @author David @dvhsh (https://dvh.sh)
  * @created Wed Sep 23, 2026
- * @modified Wed Sep 23, 2026
+ * @modified Mon Sep 28, 2026
  */
 
 import { ARTISTS, BANNED_SOURCES, LABEL_TRACKS, nfkc, OVERRIDES } from "./data.js";
@@ -108,7 +108,8 @@ const artistVerdict = (key: string): ComplianceVerdict | null => {
  */
 export const evaluateBeatmapset = (facts: BeatmapsetFacts): ComplianceVerdict => {
   // 1. DMCA: not downloadable, or osu! shows a content notice.
-  if (facts.downloadDisabled || facts.moreInformation !== null) {
+  // `!= null`: a missing moreInformation (hand-built facts, a row without the column) is no notice.
+  if (facts.downloadDisabled || facts.moreInformation != null) {
     return { status: "disallowed", reason: "dmca" };
   }
   const artist = nfkc(facts.artist);
