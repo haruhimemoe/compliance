@@ -1,10 +1,12 @@
 /**
  * @file scripts/smoke.mjs
- * @desc Imports the built package the way Node consumers will (dist/, JSON import attributes)
- *       and checks one verdict per outcome. Run by `bun run test:dist` after a build.
+ * @desc Imports the built package the way Node consumers will (dist/, JSON import attributes),
+ *       checks one verdict per outcome, that dist/data/LICENSE and dist/index.d.ts exist, and
+ *       that every data file listed in docs/vendored-data.md ships with the sha256 recorded
+ *       there (so a data refresh with stale hashes fails here). Run by `bun run test:dist`.
  * @author David @dvhsh (https://dvh.sh)
  * @created Wed Sep 23, 2026
- * @modified Wed Sep 23, 2026
+ * @modified Mon Sep 28, 2026
  */
 
 import assert from "node:assert/strict";
@@ -42,18 +44,14 @@ assert.ok(
 );
 assert.ok(existsSync(new URL("../dist/index.d.ts", import.meta.url)), "dist/index.d.ts missing");
 // The shipped data must be the vendored bytes, so the hashes in docs/vendored-data.md hold.
-// Match the file's own row, not the whole doc, so a hash that moved to another file's row fails.
+// The doc's table lists the files: | `file` | `upstream path` | `sha256` |, each hash on its own
+// file's row, so a hash that moved to another file's row fails.
 const doc = readFileSync(new URL("../docs/vendored-data.md", import.meta.url), "utf8");
-for (const file of [
-  "artists/restricted.json",
-  "labels/MEGAREX.json",
-  "overrides/edge-cases.json",
-  "sources/banned.json",
-  "LICENSE",
-]) {
+const rows = [...doc.matchAll(/^\| `([^`]+)` \| `[^`]+` \| `([0-9a-f]{64})` \|$/gm)];
+assert.ok(rows.length > 0, "docs/vendored-data.md lists no data files");
+for (const [, file, hash] of rows) {
   const bytes = readFileSync(new URL(`../dist/data/${file}`, import.meta.url));
-  const hash = createHash("sha256").update(bytes).digest("hex");
-  const row = doc.split("\n").find((line) => line.startsWith(`| \`${file}\` |`));
-  assert.ok(row?.includes(`\`${hash}\``), `dist/data/${file} differs from the vendored bytes`);
+  const actual = createHash("sha256").update(bytes).digest("hex");
+  assert.equal(actual, hash, `dist/data/${file} differs from the vendored bytes`);
 }
 console.log("smoke: ok");
