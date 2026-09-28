@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-09-28
+
 ### Fixed
 
 - `evaluateBeatmapset` reads a missing `moreInformation` (hand-built facts, or a row without the column) as no content notice, like `factsFromOsuBeatmapset` does. Before, it returned disallowed/dmca for every set.
@@ -23,5 +25,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `isLeaderboardStatus`, `COMPLIANCE_STATUSES`, `COMPLIANCE_REASONS`, `UPSTREAM` and `RULE_LINKS`.
 - Artist, override, source and label data vendored from omc-api at `bb356b3` (2026-06-28), with hashes pinned in `docs/vendored-data.md`.
 
-[unreleased]: https://github.com/haruhimemoe/compliance/compare/085262bc158d7b8ce2580b62a7b6b147b7923ed5...HEAD
+[unreleased]: https://github.com/haruhimemoe/compliance/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/haruhimemoe/compliance/compare/085262bc158d7b8ce2580b62a7b6b147b7923ed5...v0.1.1
 [0.1.0]: https://github.com/haruhimemoe/compliance/tree/085262bc158d7b8ce2580b62a7b6b147b7923ed5

@@ -10,7 +10,7 @@
 - **Public API is pinned** by `tests/exports.test.ts`. Adding or removing an export is a semver decision: say so in `CHANGELOG.md`. Keep the README's API section in step with `src/index.ts`.
 - **Test first.** A rule change starts as a failing case in `tests/evaluate.test.ts`.
 - **Changelog.** A change users can see gets a line under `## [Unreleased]` in `CHANGELOG.md` ([Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/)). Never rewrite a released entry. While on 0.x, a rule or data change that can change a verdict is a minor version.
-- **Releases are cut by the maintainers.** Don't bump the version, tag, push or publish.
+- **Releases are cut by the maintainers.** Don't bump the version, tag, push or publish unless a maintainer asks. A release commit moves `## [Unreleased]` to the new version with its date and compare link, and bumps `package.json`: a patch for fixes only, a minor for a verdict-changing rule or data change or a new export.
 - Code style: Biome (2 spaces, double quotes, 100 columns). Every file starts with the `@file / @desc / @author / @created / @modified` header. Functions exported from a file in `src/` get a JSDoc block with `@function`, `@param` and `@returns`.
 - Imports inside `src/` use `.js` extensions (Node ESM). JSON imports use `with { type: "json" }`.
 - Docs are for their readers: `README.md` for users, `CONTRIBUTING.md` for contributors, this file for agents. No maintainer notes in any of them.
