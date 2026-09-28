@@ -1,0 +1,41 @@
+name: Wrong verdict or bug
+description: A beatmapset gets the wrong verdict, or something else is broken
+labels: [bug]
+body:
+  - type: input
+    id: set
+    attributes:
+      label: Beatmapset
+      description: The id or an osu.ppy.sh link.
+      placeholder: https://osu.ppy.sh/beatmapsets/39804
+    validations:
+      required: true
+  - type: textarea
+    id: verdict
+    attributes:
+      label: Expected and actual verdict
+      description: What this package returned (status and reason), and what you expected, with the rule or wiki page that says so.
+    validations:
+      required: true
+  - type: dropdown
+    id: upstream
+    attributes:
+      label: Does omc-api agree with this package?
+      description: CONTRIBUTING.md explains how to check. If omc-api gives the same verdict, the fix may belong upstream.
+      options:
+        - "Yes, same verdict"
+        - "No, omc-api gives the verdict I expected"
+        - "I didn't check"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version (and UPSTREAM.commit)
+      placeholder: "0.1.1, bb356b3"
+    validations:
+      required: true
+  - type: textarea
+    id: more
+    attributes:
+      label: Anything else
